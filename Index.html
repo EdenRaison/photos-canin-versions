@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Photos Canin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Même charte que l'Agenda Canin */
+:root {
+  --bg: #F1F4EE; --surface: #FFFFFF; --ink: #1B2520; --muted: #5C6A61; --line: #D9E0D5;
+  --accent: #2C6A4A; --accent-ink: #FFFFFF; --soft: #E1ECE3;
+  --amber: #A86A12; --amber-soft: #F7EAD2; --red: #AE3F33; --red-soft: #F6E0DC;
+  --shadow: 0 1px 2px rgba(27,37,32,.06), 0 4px 16px rgba(27,37,32,.06);
+  --f-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121814; --surface: #1B231E; --ink: #E6EDE8; --muted: #9AA99F; --line: #2B3730;
+    --accent: #72C195; --accent-ink: #0D1A12; --soft: #1F3328;
+    --amber: #E3A94F; --amber-soft: #382B16; --red: #EC8175; --red-soft: #3A2220;
+    --shadow: 0 1px 2px rgba(0,0,0,.3); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121814; --surface: #1B231E; --ink: #E6EDE8; --muted: #9AA99F; --line: #2B3730;
+  --accent: #72C195; --accent-ink: #0D1A12; --soft: #1F3328;
+  --amber: #E3A94F; --amber-soft: #382B16; --red: #EC8175; --red-soft: #3A2220;
+  --shadow: 0 1px 2px rgba(0,0,0,.3); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.45;
+  -webkit-text-size-adjust: 100%; padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px));
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+p { margin: 0; }
+svg.i { width: 1.2em; height: 1.2em; fill: currentColor; flex: none; }
+.wrap { max-width: 860px; margin: 0 auto; padding-inline: 16px; }
+.demo { background: var(--amber-soft); color: var(--amber); font-size: 14px; text-align: center; padding: 6px 16px; font-weight: 700; }
+a { color: var(--accent); font-weight: 700; }
+
+nav.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: repeat(2, 1fr); padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+}
+nav.tabs button {
+  background: none; border: 0; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 6px 4px; border-radius: 12px; color: var(--muted); font-size: 14px; font-weight: 700; position: relative;
+}
+nav.tabs button svg { width: 26px; height: 26px; }
+nav.tabs button[aria-current="page"] { color: var(--accent); background: var(--soft); }
+@media (min-width: 820px) {
+  body { padding-bottom: 110px; }
+  nav.tabs { position: sticky; top: 0; bottom: auto; border-top: 0; border-bottom: 1px solid var(--line);
+    grid-template-columns: repeat(2, auto); justify-content: center; gap: 12px; padding: 8px; }
+  nav.tabs button { flex-direction: row; gap: 8px; padding: 8px 18px; font-size: 16px; }
+  nav.tabs button svg { width: 22px; height: 22px; }
+}
+header.top { padding-block: 20px 14px; }
+header.top h1 { font-size: 30px; font-weight: 800; }
+.sub { color: var(--muted); font-size: 15px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 16px; margin-bottom: 14px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--line); background: var(--surface);
+  border-radius: 12px; padding: 10px 16px; font-weight: 700; min-height: 46px; text-decoration: none; color: var(--ink); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--accent); padding-inline: 8px; }
+.btn.big { width: 100%; font-size: 19px; min-height: 60px; }
+.btn.small { min-height: 38px; padding: 6px 12px; font-size: 15px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px;
+  padding: 6px 12px; font-size: 15px; font-weight: 700; min-height: 38px; color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--soft); border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 14px; }
+.seg button { border: 0; background: none; border-radius: 9px; padding: 8px 4px; font-weight: 700; color: var(--muted); font-size: 15px; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; border-radius: 6px; padding: 2px 7px; background: var(--soft); color: var(--accent); }
+.tag.amber { background: var(--amber-soft); color: var(--amber); }
+.tag.red { background: var(--red-soft); color: var(--red); }
+.note { background: var(--soft); border-radius: 12px; padding: 12px 14px; font-size: 15px; }
+.note.amber { background: var(--amber-soft); }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.mt { margin-top: 12px; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.stat b { display: block; font-family: var(--f-display); font-size: 26px; line-height: 1.1; }
+.stat span { font-size: 13px; color: var(--muted); font-weight: 700; }
+.stat.good { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.stat.good span { color: inherit; opacity: .85; }
+
+.sess-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 10px; }
+.sess-head h2 { font-size: 21px; }
+.accord { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 15px; margin-bottom: 10px; }
+.accord .seg { margin: 0; padding: 3px; }
+.accord .seg button { padding: 4px 10px; font-size: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; align-items: start; }
+.ph .vue { width: 100%; height: 100%; background-repeat: no-repeat; background-color: var(--soft); }
+.ph { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 4/3; background: var(--soft); }
+.ph > button.open { border: 0; padding: 0; display: block; width: 100%; height: 100%; background: none; }
+.ph img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ph.off img, .ph.off .vue { opacity: .38; filter: grayscale(.7); }
+.ph .badge { position: absolute; left: 5px; top: 5px; max-width: calc(100% - 44px); font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 5px; background: rgba(0,0,0,.66); color: #fff; pointer-events: none; }
+.ph .badge.bad { background: #AE3F33; }
+.ph .badge.qui { background: #A86A12; }
+.ph .t, .ph .dogname { position: absolute; bottom: 4px; font-size: 11px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.9); pointer-events: none; }
+.ph .t { left: 5px; } .ph .dogname { right: 5px; }
+.keep { position: absolute; right: 4px; top: 4px; width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; background: rgba(0,0,0,.35);
+  display: grid; place-items: center; color: #fff; padding: 0; }
+.keep[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.keep svg { width: 18px; height: 18px; fill: currentColor; }
+.keep[aria-pressed="false"] svg { visibility: hidden; }
+
+.validate { position: fixed; left: 0; right: 0; bottom: calc(72px + env(safe-area-inset-bottom, 0px)); z-index: 19; padding: 8px 16px; }
+.validate .btn { max-width: 828px; margin: 0 auto; display: flex; box-shadow: 0 6px 24px rgba(0,0,0,.2); }
+@media (min-width: 820px) { .validate { bottom: 16px; } }
+
+.overlay { position: fixed; inset: 0; background: rgba(12,18,14,.6); z-index: 50; display: grid; place-items: center; padding: 16px; }
+.overlay .card { width: min(440px, 100%); }
+.bar { height: 10px; background: var(--soft); border-radius: 5px; overflow: hidden; margin-top: 12px; }
+.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+.spin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid var(--soft); border-top-color: var(--accent); animation: spin .8s linear infinite; display: inline-block; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+dialog { border: 0; border-radius: 18px; padding: 0; width: min(760px, calc(100% - 20px)); max-height: calc(100% - 20px); background: var(--surface); color: var(--ink); }
+dialog::backdrop { background: rgba(12,18,14,.6); }
+.dlg-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); z-index: 2; }
+.dlg-body { padding: 16px; }
+.icon-btn { border: 0; background: var(--soft); border-radius: 50%; width: 42px; height: 42px; display: grid; place-items: center; flex: none; color: var(--ink); }
+.icon-btn:disabled { opacity: .35; }
+.big-ph { position: relative; border-radius: 12px; overflow: hidden; background: var(--soft); }
+.big-ph img { display: block; width: 100%; height: auto; }
+.big-ph .cadre { position: absolute; border: 3px dashed #fff; box-shadow: 0 0 0 9999px rgba(0,0,0,.45); pointer-events: none; }
+.formats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items: end; margin-top: 12px; }
+.fmt { text-align: center; font-size: 13px; border: 0; background: none; padding: 0; color: var(--ink); }
+.crop { background-repeat: no-repeat; background-color: var(--soft); border-radius: 8px; margin: 0 auto 4px; }
+.fmt[aria-pressed="true"] .crop { outline: 3px solid var(--accent); outline-offset: 2px; }
+.fmt b { display: block; font-size: 13px; }
+@media (max-width: 520px) { .formats { grid-template-columns: repeat(2, 1fr); } }
+.lbl { font-size: 14px; font-weight: 700; color: var(--muted); margin: 14px 0 6px; }
+select, input[type=search], input[type=text], input[type=datetime-local], textarea {
+  border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 10px 12px; min-height: 46px; width: 100%; color: var(--ink); }
+textarea { min-height: 130px; resize: vertical; line-height: 1.4; }
+
+.search { position: relative; margin-bottom: 4px; }
+.search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); fill: var(--muted); width: 22px; height: 22px; }
+.search input { padding-left: 42px; font-size: 18px; }
+.filter-label { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 12px 0 6px; }
+
+.post-strip { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 6px; margin: 10px 0; }
+.post-strip .crop { flex: none; height: 170px; margin: 0; position: relative; }
+.post-strip .crop .x { position: absolute; right: 4px; top: 4px; width: 28px; height: 28px; border-radius: 50%; border: 0; background: rgba(0,0,0,.6); color: #fff; font-weight: 700; }
+.files { display: grid; gap: 6px; margin-top: 10px; }
+.files a { display: flex; justify-content: space-between; gap: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; text-decoration: none; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(150px + env(safe-area-inset-bottom, 0px)); z-index: 60;
+  background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 12px; font-weight: 700; font-size: 15px; width: max-content; max-width: calc(100% - 32px);
+  box-shadow: 0 6px 24px rgba(0,0,0,.25); }
+@media (min-width: 820px) { .toast { bottom: 90px; } }
+details.how summary { font-weight: 700; cursor: pointer; font-family: var(--f-display); font-size: 18px; }
+details.how ol { padding-left: 22px; margin: 10px 0 0; }
+details.how li { margin-bottom: 6px; }
+.empty { text-align: center; padding: 30px 16px; color: var(--muted); }
+.loading { padding: 50px 0; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="demo" class="demo" hidden>Mode essai : l'agenda est inventé et rien n'est enregistré en ligne</div>
+<nav class="tabs" id="tabs"></nav>
+<main class="wrap" id="main"><div class="loading">Chargement…</div></main>
+<div id="validate"></div>
+<dialog id="dlg"></dialog>
+<div id="overlay"></div>
+<div id="toast"></div>
+<input type="file" id="fichiers" accept="image/*" multiple hidden>
+
+<script>
+
+/* Si quelque chose bloque au démarrage, on affiche l'erreur au lieu de rester sur « Chargement… » */
+(function () {
+  function montrer(msg) {
+    var m = document.getElementById('main');
+    if (m && /Chargement/.test(m.textContent)) m.innerHTML = '<div class="card" style="margin-top:20px"><h2 style="font-size:20px">L\'appli n\'a pas pu démarrer</h2><p class="small muted" style="margin-top:8px">Fais une capture de cet écran et envoie-la à Eden :</p><p class="small" style="margin-top:8px;word-break:break-word"><code>' + String(msg).replace(/</g, '&lt;') + '</code></p><p class="small muted" style="margin-top:8px">' + navigator.userAgent.replace(/</g, '&lt;') + '</p></div>';
+  }
+  window.addEventListener('error', function (e) {montrer((e.message || 'erreur') + (e.lineno ? ' (ligne ' + e.lineno + ')' : ''));});
+  window.addEventListener('unhandledrejection', function (e) {montrer(e.reason && e.reason.message || e.reason);});
+  setTimeout(function () {montrer('Rien ne s\'est affiché après 20 secondes.');}, 20000);
+})();
+</script>
+<script>
+
+// Tout le code est enfermé dans une fonction : ses noms ne peuvent pas entrer en conflit avec le code que Google ajoute dans la page
+(function () {
+  /* ============ Réglages ============ */
+  const ACTIONS = {
+    saut: ['Saut de haie', 'agility'], tunnel: ['Tunnel', 'agility'], slalom: ['Slalom', 'agility'], passerelle: ['Passerelle', 'agility'],
+    palissade: ['Palissade', 'agility'], balancoire: ['Balançoire', 'agility'], pneu: ['Pneu', 'agility'], table: ['Table', 'agility'],
+    assis: ['Assis', 'education'], couche: ['Couché', 'education'], pasbouger: ['Pas bouger', 'education'], laisse: ['Marche en laisse', 'education'],
+    rappel: ['Rappel', 'education'], jeu: ['Jeu', 'education'], portrait: ['Portrait', 'autre']
+  };
+  const TAILLE_DRIVE = 2560; // côté le plus long des photos rangées dans Drive
+  const MARGE_SEANCE = 20; // minutes avant/après une séance où une photo lui est encore rattachée
+  const LIBS = [
+  'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js',
+  'https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js'];
+
+  const MOBILENET = 'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.50_224/model.json';
+
+  /* ============ Icônes ============ */
+  const IC = {
+    photos: 'M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4 2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z',
+    search: 'M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z',
+    cal: 'M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z',
+    check: 'M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z',
+    close: 'M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z',
+    upload: 'M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z',
+    left: 'M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z',
+    right: 'M8.6 5.4 10 4l8 8-8 8-1.4-1.4 6.6-6.6z'
+  };
+  const icon = (n) => "<svg class=\"i\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"" + IC[n] + "\"/></svg>";
+
+  /* ============ Accès au serveur (Google) ou mode essai ============ */
+  const IS_GAS = typeof google !== 'undefined' && google.script && google.script.run;
+  function call(fn, ...args) {
+    if (IS_GAS) return new Promise((res, rej) => google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn](...args));
+    return new Promise((res, rej) => setTimeout(() => {try {res(Demo[fn](...args));} catch (e) {rej(e);}}, 120));
+  }
+
+  /* Mode essai (fichier ouvert hors Google) : un agenda inventé, calé sur l'heure des photos choisies */
+  const Demo = (() => {
+    const chiens = [
+    { id: 'd1', nom: 'Rio', race: 'Berger australien', clientId: 'c1', clientNom: 'Mme Martin' },
+    { id: 'd2', nom: 'Nala', race: 'Golden retriever', clientId: 'c2', clientNom: 'M. Lambert' },
+    { id: 'd3', nom: 'Pepsi', race: 'Border collie', clientId: 'c3', clientNom: 'Mme Roux' },
+    { id: 'd4', nom: 'Olly', race: 'Jack russell', clientId: 'c4', clientNom: 'M. Petit' }];
+
+    const db = { Photos: [], Accords: {}, Apprentissage: [], images: {} };
+    const PLAN = [
+    { type: 'individuel', titre: 'Agility', chiens: ['d1'] },
+    { type: 'individuel', titre: '', chiens: ['d2'] },
+    { type: 'collectif', titre: 'Agility', chiens: ['d3', 'd4'] }];
+
+    return {
+      infoVersion() {return { actuelle: 'essai', derniere: null };},
+      mettreAJour() {throw new Error('La mise à jour se fait dans l’appli installée sur Google.');},
+      getContexte(dates, heures) {
+        // Regroupe les heures des photos en créneaux d'une heure : chaque créneau devient une séance inventée
+        const seances = [];
+        (heures || []).slice().sort().forEach((h) => {
+          const last = seances[seances.length - 1];
+          const t = new Date(h).getTime();
+          if (last && last.date === h.slice(0, 10) && t - last.t0 < 75 * 60000) return;
+          const k = seances.length % PLAN.length,d = new Date(t - 5 * 60000);
+          seances.push(Object.assign({ id: 'demo' + seances.length, t0: t, date: h.slice(0, 10), duree: 60,
+            debut: h.slice(0, 10) + "T" + pad(d.getHours()) + ":" + pad(d.getMinutes() < 30 ? 0 : 30) }, PLAN[k]));
+        });
+        if (!seances.length) (dates || []).forEach((d) => PLAN.forEach((p, k) => seances.push(Object.assign({ id: 'demo-' + d + k, debut: d + 'T' + ['09:00', '10:30', '14:00'][k], duree: 60 }, p))));
+        return { seances, chiens: chiens.slice(), clients: [], source: 'demo', accords: Object.assign({}, db.Accords), appris: db.Apprentissage.slice() };
+      },
+      enregistrerPhoto(meta, b64, mini) {
+        const fileId = 'f' + db.Photos.length;
+        db.images[fileId] = b64;
+        db.Photos.push(Object.assign({}, meta, { fileId, miniature: mini, ajoutee: toStr(new Date()) }));
+        return { id: meta.id, fileId, dossier: '#' };
+      },
+      apprendre(items) {items.forEach((i) => db.Apprentissage.push(i));},
+      setAccord(clientId, nom, accord) {db.Accords[clientId] = accord;return true;},
+      ajouterChien(nom) {const d = { id: 'x' + Date.now(), nom, race: '', clientId: '', clientNom: '' };chiens.push(d);return d;},
+      chercher(f) {
+        const q = norm(f.q || '');
+        const facettes = { chiens: {}, clients: {}, mois: {}, actions: {} };
+        db.Photos.forEach((r) => {if (r.chienId) facettes.chiens[r.chienId] = r.chienNom;if (r.clientId) facettes.clients[r.clientId] = r.clientNom;facettes.mois[r.date.slice(0, 7)] = 1;if (r.action) facettes.actions[r.action] = 1;});
+        const res = db.Photos.filter((r) => (!f.chienId || r.chienId === f.chienId) && (!f.clientId || r.clientId === f.clientId) && (!f.mois || r.date.slice(0, 7) === f.mois) && (
+        !f.action || r.action === f.action) && (!q || q.split(/\s+/).every((m) => norm([r.chienNom, r.clientNom, r.seanceNom, r.action, r.date, r.note].join(' ')).includes(m)))).
+        sort((a, b) => (b.date + b.heure).localeCompare(a.date + a.heure));
+        return { total: res.length, photos: res.slice(0, 150), facettes };
+      },
+      getImage(fileId) {return db.images[fileId];},
+      majPhoto(id, champs) {const r = db.Photos.find((x) => x.id === id);Object.assign(r, champs);return r;}
+    };
+  })();
+
+  /* ============ Outils ============ */
+  const pad = (n) => String(n).padStart(2, '0');
+  const toStr = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + "T" + pad(d.getHours()) + ":" + pad(d.getMinutes());
+  const parse = (s) => {const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);return m ? new Date(+m[1], +m[2] - 1, +m[3], +(m[4] || 0), +(m[5] || 0)) : new Date(NaN);};
+  const el = (s) => document.querySelector(s);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const norm = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const uid = (p) => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const fJour = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  const fCourt = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+  const fMois = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' });
+  const jour = (d) => fJour.format(parse(d));
+  const hh = (s) => s.replace(':', 'h');
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const median = (a) => {if (!a.length) return 0;const s = a.slice().sort((x, y) => x - y);return s[Math.floor(s.length / 2)];};
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const tick = () => new Promise((r) => setTimeout(r, 0));
+  const actionLabel = (id) => (ACTIONS[id] || [id])[0];
+  const actionId = (label) => Object.keys(ACTIONS).find((k) => ACTIONS[k][0] === label) || '';
+  let toastTimer;
+  function toast(msg, ms = 3500) {el('#toast').innerHTML = "<div class=\"toast\" role=\"status\">" + msg + "</div>";clearTimeout(toastTimer);toastTimer = setTimeout(() => el('#toast').innerHTML = '', ms);}
+  function erreur(e) {console.error(e);toast('⚠️ ' + esc(e && e.message ? e.message : e), 6000);}
+
+  /* ============ Lecture de la date des photos (données EXIF du fichier) ============ */
+  async function lireDate(file) {
+    try {
+      const dv = new DataView(await file.slice(0, 262144).arrayBuffer());
+      if (dv.getUint16(0) !== 0xFFD8) return null;
+      let off = 2;
+      while (off + 10 < dv.byteLength) {
+        const marker = dv.getUint16(off),len = dv.getUint16(off + 2);
+        if (marker === 0xFFE1 && dv.getUint32(off + 4) === 0x45786966) return dateTiff(dv, off + 10);
+        if ((marker & 0xFF00) !== 0xFF00 || marker === 0xFFDA) break;
+        off += 2 + len;
+      }
+    } catch (e) {}
+    return null;
+  }
+  function dateTiff(dv, t) {
+    const le = dv.getUint16(t) === 0x4949;
+    const u16 = (o) => dv.getUint16(t + o, le),u32 = (o) => dv.getUint32(t + o, le);
+    const ifd = (o) => {const tags = {},n = u16(o);for (let i = 0; i < n; i++) {const e = o + 2 + i * 12;tags[u16(e)] = { count: u32(e + 4), val: e + 8 };}return tags;};
+    const str = (tag) => {if (!tag) return null;const p = tag.count > 4 ? u32(tag.val) : tag.val;let s = '';for (let i = 0; i < tag.count - 1; i++) s += String.fromCharCode(dv.getUint8(t + p + i));return s;};
+    const ifd0 = ifd(u32(4));
+    const exif = ifd0[0x8769] ? ifd(u32(ifd0[0x8769].val)) : {};
+    const s = str(exif[0x9003]) || str(exif[0x9004]) || str(ifd0[0x0132]);
+    const m = s && s.match(/^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
+    return m ? new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]) : null;
+  }
+
+  /* ============ Images ============ */
+  async function decoder(file) {
+    if (window.createImageBitmap) {try {return await createImageBitmap(file);} catch (e) {}}
+    return new Promise((res, rej) => {
+      const img = new Image(),url = URL.createObjectURL(file);
+      img.onload = () => {URL.revokeObjectURL(url);res(img);};
+      img.onerror = () => {URL.revokeObjectURL(url);rej(new Error('format non lu'));};
+      img.src = url;
+    });
+  }
+  function reduire(src, maxCote) {
+    const W = src.width || src.naturalWidth,H = src.height || src.naturalHeight;
+    const k = Math.min(1, maxCote / Math.max(W, H));
+    const c = document.createElement('canvas');
+    c.width = Math.round(W * k);c.height = Math.round(H * k);
+    c.getContext('2d').drawImage(src, 0, 0, c.width, c.height);
+    return c;
+  }
+  const versUrl = (c, q = 0.82) => new Promise((r) => c.toBlob((b) => r(URL.createObjectURL(b)), 'image/jpeg', q));
+  const versB64 = (c, q = 0.88) => c.toDataURL('image/jpeg', q).split(',')[1];
+  function b64Image(b64) {
+    return new Promise((res, rej) => {const i = new Image();i.onload = () => res(i);i.onerror = () => rej(new Error('Image illisible'));i.src = 'data:image/jpeg;base64,' + b64;});
+  }
+
+  // Recadrage : la photo garde sa forme d'origine, on recentre sur le chien.
+  // marge = taille du cadre par rapport au chien ; zoomMax = jusqu'où on a le droit de resserrer.
+  const RECADRAGES = {
+    entiere: { court: 'Entière' },
+    large: { court: 'Large', marge: 2.4, zoomMax: 1.6 },
+    serre: { court: 'Serré', marge: 1.6, zoomMax: 2.5 }
+  };
+  // box et résultat en proportions de l'image (0 à 1)
+  function cadre(box, W, H, niveau) {
+    const R = RECADRAGES[niveau] || RECADRAGES.large;
+    if (!box || !R.marge) return [0, 0, 1, 1];
+    const ratio = W / H,bw = box[2] * W,bh = box[3] * H;
+    // largeur du cadre : le chien avec de l'air autour, sans trop zoomer…
+    let cw = clamp(Math.max(bw * R.marge, bh * R.marge * ratio), W / R.zoomMax, W);
+    // …en coupant toujours un peu (au moins 10 %) pour pouvoir recentrer le chien…
+    cw = Math.min(cw, W * 0.9);
+    // …mais sans jamais couper le chien (5 % de marge de chaque côté)
+    cw = Math.min(W, Math.max(cw, bw * 1.1, bh * 1.1 * ratio));
+    const ch = cw / ratio;
+    if (cw > W * 0.97) return [0, 0, 1, 1];
+    const cx = (box[0] + box[2] / 2) * W,cy = (box[1] + box[3] / 2) * H - bh * 0.04;
+    const x = clamp(cx - cw / 2, 0, W - cw),y = clamp(cy - ch / 2, 0, H - ch);
+    return [x / W, y / H, cw / W, ch / H];
+  }
+  const cadreDe = (p) => cadre(p.box, p.W, p.H, p.box ? p.recadrage : 'entiere');
+  // Aperçu d'un recadrage en CSS (pas besoin de recalculer l'image)
+  function apercu(url, r) {
+    const [x, y, w, h] = r;
+    const px = w >= 0.999 ? 0 : x / (1 - w) * 100,py = h >= 0.999 ? 0 : y / (1 - h) * 100;
+    return "background-image:url('" + url + "');background-size:" + 100 / w + "% " + 100 / h + "%;background-position:" + px + "% " + py + "%";
+  }
+
+  /* ============ Outils de reconnaissance (gratuits, sur le téléphone) ============ */
+  const M = { ok: false, promesse: null, coco: null, net: null };
+  function script(src) {return new Promise((res, rej) => {const s = document.createElement('script');s.src = src;s.onload = res;s.onerror = () => rej(new Error('chargement impossible'));document.head.appendChild(s);});}
+  function chargerOutils() {return M.promesse = M.promesse || chargerOutils_();}
+  async function chargerOutils_() {
+    try {
+      for (const src of LIBS) if (!document.querySelector("script[src=\"" + src + "\"]")) await script(src);
+      await tf.ready();
+      M.coco = await cocoSsd.load({ base: 'lite_mobilenet_v2' });
+      try {
+        const net = await tf.loadLayersModel(MOBILENET);
+        M.net = tf.model({ inputs: net.inputs, outputs: net.getLayer('global_average_pooling2d_1').output });
+      } catch (e) {console.warn('MobileNet', e);}
+      M.ok = true;
+    } catch (e) {console.warn('Reconnaissance indisponible', e);}
+  }
+  function empreinte(canvas) {
+    if (!M.net) return null;
+    const v = tf.tidy(() => {
+      const x = tf.image.resizeBilinear(tf.browser.fromPixels(canvas), [224, 224]).toFloat().div(127.5).sub(1).expandDims(0);
+      return M.net.predict(x).reshape([-1]);
+    });
+    const a = v.dataSync().slice();v.dispose();
+    let n = 0;for (const x of a) n += x * x;n = Math.sqrt(n) || 1;
+    for (let i = 0; i < a.length; i++) a[i] /= n;
+    return a;
+  }
+  const cosinus = (a, b) => {let s = 0;for (let i = 0; i < a.length; i++) s += a[i] * b[i];return s;};
+  // Les empreintes sont gardées en texte compact dans Google Sheets
+  function encoder(v) {let m = 0;for (const x of v) m = Math.max(m, Math.abs(x));const b = new Int8Array(v.length);v.forEach((x, i) => b[i] = Math.round(x / (m || 1) * 127));let s = '';b.forEach((x) => s += String.fromCharCode(x & 255));return btoa(s);}
+  function decoder64(s) {const bin = atob(s),a = new Float32Array(bin.length);let n = 0;for (let i = 0; i < bin.length; i++) {const x = bin.charCodeAt(i) << 24 >> 24;a[i] = x;n += x * x;}n = Math.sqrt(n) || 1;return a.map((x) => x / n);}
+
+  function grisDe(canvas) {
+    const { width: w, height: h } = canvas,d = canvas.getContext('2d').getImageData(0, 0, w, h).data,g = new Float32Array(w * h);
+    for (let i = 0, j = 0; i < d.length; i += 4, j++) g[j] = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+    return { g, w, h };
+  }
+  // Netteté : variance du laplacien sur la zone du chien (plus c'est haut, plus c'est net)
+  function nettete({ g, w, h }, box) {
+    let [x0, y0, bw, bh] = box || [0.2, 0.2, 0.6, 0.6];
+    const X0 = Math.max(1, Math.floor(x0 * w)),Y0 = Math.max(1, Math.floor(y0 * h));
+    const X1 = Math.min(w - 2, Math.ceil((x0 + bw) * w)),Y1 = Math.min(h - 2, Math.ceil((y0 + bh) * h));
+    let s = 0,s2 = 0,n = 0;
+    for (let y = Y0; y <= Y1; y++) for (let x = X0; x <= X1; x++) {
+      const i = y * w + x,l = g[i - 1] + g[i + 1] + g[i - w] + g[i + w] - 4 * g[i];
+      s += l;s2 += l * l;n++;
+    }
+    return n ? s2 / n - (s / n) ** 2 : 0;
+  }
+  function luminosite({ g }) {let s = 0;for (let i = 0; i < g.length; i += 7) s += g[i];return s / Math.ceil(g.length / 7);}
+  // Empreinte visuelle 64 points pour repérer les doublons
+  function dhash(canvas) {
+    const c = document.createElement('canvas');c.width = 9;c.height = 8;
+    const g = c.getContext('2d');g.drawImage(canvas, 0, 0, 9, 8);
+    const d = g.getImageData(0, 0, 9, 8).data,bits = [];
+    for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) {const i = (y * 9 + x) * 4,a = d[i] + d[i + 1] + d[i + 2],b = d[i + 4] + d[i + 5] + d[i + 6];bits.push(a > b ? 1 : 0);}
+    return bits;
+  }
+  const hamming = (a, b) => a.reduce((s, x, i) => s + (x !== b[i]), 0);
+
+  async function analyserPhoto(file) {
+    const p = { id: uid('p'), file, nom: file.name, keep: false, issue: null };
+    const d = (await lireDate(file)) || new Date(file.lastModified || Date.now());
+    p.t = d.getTime();p.date = toStr(d).slice(0, 10);p.heure = toStr(d).slice(11, 16);
+    const src = await decoder(file);
+    p.W = src.width || src.naturalWidth;p.H = src.height || src.naturalHeight;
+    const a = reduire(src, 640);
+    p.thumb = await versUrl(reduire(a, 480));
+    p.mini = versB64(reduire(a, 240), 0.72);
+    if (src.close) src.close();
+    if (M.coco) {
+      const det = (await M.coco.detect(a, 8, 0.25)).filter((x) => ['dog', 'cat', 'teddy bear', 'sheep'].includes(x.class));
+      const main = det.sort((x, y) => y.score * Math.sqrt(y.bbox[2] * y.bbox[3]) - x.score * Math.sqrt(x.bbox[2] * x.bbox[3]))[0];
+      if (main) {p.box = [main.bbox[0] / a.width, main.bbox[1] / a.height, main.bbox[2] / a.width, main.bbox[3] / a.height];p.det = main.score;p.nbChiens = det.filter((x) => x.score > 0.5).length;}
+    }
+    const gris = grisDe(a);
+    p.sharp = nettete(gris, p.box);
+    p.lum = luminosite(gris);
+    p.hash = dhash(a);
+    if (M.net) {
+      p.vImg = empreinte(a);
+      if (p.box) {
+        const [x, y, w, h] = p.box,s = Math.max(w * a.width, h * a.height) * 1.1;
+        const c = document.createElement('canvas');c.width = c.height = 224;
+        c.getContext('2d').drawImage(a, (x + w / 2) * a.width - s / 2, (y + h / 2) * a.height - s / 2, s, s, 0, 0, 224, 224);
+        p.vDog = empreinte(c);
+      }
+    }
+    return p;
+  }
+
+  /* ============ Classement ============ */
+  const st = { tab: 'trier', ctx: null, batch: null, filtre: 'sel', recherche: { q: '' }, resultats: null, pub: null, fini: null, jour: null };
+  const chien = (id) => st.ctx && st.ctx.chiens.find((d) => d.id === id);
+  const seance = (id) => st.ctx && st.ctx.seances.find((s) => s.id === id);
+  const nomSeance = (s) => {
+    const noms = s.chiens.map((id) => (chien(id) || {}).nom).filter(Boolean);
+    if (s.type === 'collectif') return hh(s.debut.slice(11, 16)) + " " + (s.titre || 'Cours collectif') + " \u2014 " + noms.join(', ');
+    const c = chien(s.chiens[0]);
+    return hh(s.debut.slice(11, 16)) + " " + (c ? c.clientNom + ' — ' + c.nom : s.titre || 'Séance');
+  };
+  const estAgility = (s) => !!s && /agility/i.test((s.titre || '') + ' ' + (s.type || ''));
+
+  function refs() {
+    const r = { chien: [], action: [] };
+    (st.ctx.appris || []).forEach((a) => {try {r[a.type] && r[a.type].push({ label: a.label, v: decoder64(a.vecteur) });} catch (e) {}});
+    (st.batch ? st.batch.photos : []).forEach((p) => {
+      if (p.chienManuel && p.vDog) r.chien.push({ label: p.chienId, v: p.vDog });
+      if (p.actionManuel && p.vImg) r.action.push({ label: p.action, v: p.vImg });
+    });
+    return r;
+  }
+  // Plus proches voisins : pour chaque étiquette possible, la meilleure ressemblance
+  function devine(v, liste, labels) {
+    if (!v) return null;
+    const best = {};
+    liste.forEach((r) => {if (labels && !labels.includes(r.label)) return;const s = cosinus(v, r.v);if (!(r.label in best) || s > best[r.label]) best[r.label] = s;});
+    const tri = Object.entries(best).sort((a, b) => b[1] - a[1]);
+    if (!tri.length) return null;
+    // Tant qu'un des chiens possibles n'a pas d'exemple, on ne décide que si la ressemblance est très forte
+    const incomplet = labels && labels.some((l) => !(l in best));
+    if (incomplet && tri[0][1] < 0.85) return null;
+    return { label: tri[0][0], sim: tri[0][1], marge: incomplet ? 0.05 : tri[0][1] - (tri[1] ? tri[1][1] : 0) };
+  }
+
+  function classer() {
+    const B = st.batch,R = refs();
+    // 1. Séance : l'heure de la photo tombe pendant un rendez-vous (à 20 minutes près)
+    B.photos.forEach((p) => {
+      if (p.seanceManuel) return;
+      let best = null,dist = Infinity;
+      st.ctx.seances.forEach((s) => {
+        const t0 = parse(s.debut).getTime(),t1 = t0 + (Number(s.duree) || 60) * 60000;
+        const d = p.t < t0 ? t0 - p.t : p.t > t1 ? p.t - t1 : 0;
+        if (d <= MARGE_SEANCE * 60000 && d < dist) {dist = d;best = s;}
+      });
+      p.seanceId = best ? best.id : null;
+    });
+    // 2. Chien : seul chien de la séance, ou le plus ressemblant parmi ceux de la séance
+    B.photos.forEach((p) => {
+      if (p.chienManuel) return;
+      const s = seance(p.seanceId);
+      p.chienId = null;p.chienConf = 0;
+      if (!s) return;
+      if (s.chiens.length === 1) {p.chienId = s.chiens[0];p.chienConf = 1;return;}
+      const g = devine(p.vDog, R.chien, s.chiens);
+      if (g && g.sim > 0.45 && g.marge > 0.015) {p.chienId = g.label;p.chienConf = clamp(0.5 + g.marge * 3, 0, 0.97);}
+    });
+    // 3. Action : ressemblance avec les photos déjà étiquetées
+    B.photos.forEach((p) => {
+      if (p.actionManuel) return;
+      const s = seance(p.seanceId),agi = estAgility(s);
+      const labels = Object.keys(ACTIONS).filter((k) => !s || ACTIONS[k][1] === 'autre' || ACTIONS[k][1] === 'agility' === agi);
+      const g = devine(p.vImg, R.action.filter((r) => labels.includes(r.label)));
+      p.action = g && g.sim > 0.55 ? g.label : null;
+    });
+    noter();
+  }
+
+  // Défauts, doublons, note de qualité et pré-sélection
+  function noter() {
+    const B = st.batch;
+    const groupes = {};
+    B.photos.forEach((p) => (groupes[p.seanceId || 'hors-' + p.date] = groupes[p.seanceId || 'hors-' + p.date] || []).push(p));
+    Object.values(groupes).forEach((list) => {
+      const med = median(list.filter((p) => p.box || !M.coco).map((p) => p.sharp)) || median(list.map((p) => p.sharp)) || 1;
+      list.forEach((p) => {
+        p.issue = null;
+        const rel = p.sharp / med; // netteté comparée aux autres photos de la séance (même lumière, même terrain)
+        if (M.coco && !p.box) p.issue = 'pas de chien';else
+        if (p.lum < 45) p.issue = 'trop sombre';else
+        if (p.lum > 228) p.issue = 'trop claire';else
+        if (p.sharp < 40 || rel < 0.1 && p.sharp < 150) p.issue = 'floue';else
+        if (p.box) {
+          const [x, y, w, h] = p.box,cx = x + w / 2,cy = y + h / 2;
+          if (x < 0.01 && cx < 0.14 || x + w > 0.99 && cx > 0.86 || y < 0.01 && cy < 0.12) p.issue = 'chien coupé';
+        }
+        const f = p.box ? p.box[2] * p.box[3] : 0;
+        p.score = Math.round(
+          40 * clamp(Math.log(Math.max(p.sharp, 1) / 30) / Math.log(Math.max(med, 60) / 30), 0, 1) +
+          25 * (p.box ? f < 0.04 ? f / 0.04 : f > 0.6 ? clamp(1 - (f - 0.6) * 2, 0, 1) : 1 : 0.4) +
+          15 * (p.det || 0.5) +
+          10 * clamp(1 - Math.abs(p.lum - 125) / 110, 0, 1) +
+          10 * (p.issue === 'chien coupé' ? 0 : 1));
+      });
+      // Rafales : photos prises à moins de 20 s d'écart et presque identiques → on garde la meilleure
+      const tri = list.slice().sort((a, b) => a.t - b.t);
+      let rafale = [];
+      const fermer = () => {
+        if (rafale.length > 1) {const top = rafale.slice().sort((a, b) => !!a.issue - !!b.issue || b.score - a.score)[0];rafale.forEach((p) => {if (p !== top && !p.issue) {p.issue = 'doublon';p.dupOf = top.id;}});}
+        rafale = [];
+      };
+      tri.forEach((p) => {
+        const prev = rafale[rafale.length - 1];
+        if (prev && (p.t - prev.t > 20000 || hamming(p.hash, prev.hash) > 12)) fermer();
+        rafale.push(p);
+      });
+      fermer();
+    });
+    selectionner();
+  }
+  function selectionner() {
+    // Premier tri seulement : toutes les photos sans défaut sont gardées, c'est elle qui choisit ensuite.
+    // Recadrage « large » par défaut quand le chien est trouvé (photo entière s'il est coupé).
+    st.batch.photos.forEach((p) => {
+      if (!p.keepManuel) p.keep = !p.issue;
+      if (!p.recadrageManuel) p.recadrage = p.box && p.issue !== 'chien coupé' ? 'large' : 'entiere';
+    });
+  }
+
+  /* ============ Import ============ */
+  function ouvrirImport() {el('#fichiers').value = '';el('#fichiers').click();}
+  el('#fichiers').onchange = (e) => {const f = [...e.target.files];if (f.length) importer(f);};
+  function progression(titre, fait, total, detail) {
+    el('#overlay').innerHTML = "<div class=\"overlay\"><div class=\"card\" role=\"status\" aria-live=\"polite\">\n    <h2 style=\"font-size:20px;margin-bottom:6px\">" +
+    titre + "</h2>\n    <p class=\"muted small\">" + (
+    detail || '') + "</p>\n    <div class=\"bar\"><i style=\"width:" + (
+    total ? Math.round(fait / total * 100) : 5) + "%\"></i></div>\n    <p class=\"small mt\">" + (
+    total ? fait + " / " + total : '<span class="spin"></span>') + "</p></div></div>";
+  }
+  async function importer(files) {
+    try {
+      progression('Préparation…', 0, 0, 'Chargement des outils de reconnaissance. La première fois, ça peut prendre 20 secondes.');
+      await chargerOutils();
+      const photos = [],ratees = [];
+      for (let i = 0; i < files.length; i++) {
+        progression("Analyse des photos", i, files.length, 'Date, netteté, chien, doublons… Tout se fait sur le téléphone.');
+        await tick();
+        try {photos.push(await analyserPhoto(files[i]));} catch (e) {ratees.push(files[i].name);}
+      }
+      progression('Lecture de l\'agenda…', 0, 0, 'Recherche des séances à ces dates.');
+      const dates = [...new Set(photos.map((p) => p.date))];
+      st.ctx = await call('getContexte', dates, photos.map((p) => p.date + 'T' + p.heure));
+      st.batch = { photos: photos.sort((a, b) => a.t - b.t), ratees };
+      st.fini = null;st.filtre = 'sel';
+      classer();
+      el('#overlay').innerHTML = '';
+      render();scrollTo(0, 0);
+      if (!M.coco) toast('Reconnaissance indisponible (connexion ?) : tri par date et netteté seulement', 6000);else
+      if (ratees.length) toast(ratees.length + " fichier(s) illisible(s) ignor\xE9(s)");
+    } catch (e) {el('#overlay').innerHTML = '';erreur(e);}
+  }
+
+  /* ============ Onglets ============ */
+  function renderTabs() {
+    const t = [['trier', 'photos', 'Trier'], ['chercher', 'search', 'Rechercher']];
+    el('#tabs').innerHTML = t.map(([id, ic, l]) => "<button data-tab=\"" + id + "\" " + (st.tab === id ? 'aria-current="page"' : '') + ">" + icon(ic) + l + "</button>").join('');
+  }
+  el('#tabs').onclick = (e) => {const b = e.target.closest('[data-tab]');if (!b) return;st.tab = b.dataset.tab;render();scrollTo(0, 0);if (st.tab === 'chercher') chercher();};
+
+  function render() {
+    renderTabs();
+    el('#main').innerHTML = st.tab === 'trier' ? renderTrier() : renderChercher();
+    el('#validate').innerHTML = st.tab === 'trier' && st.batch ? "<div class=\"validate\"><button class=\"btn primary big\" data-act=\"valider\">" + icon('check') + " Ranger " + st.batch.photos.filter((p) => p.keep).length + " photos dans Drive</button></div>" : '';
+  }
+
+  /* ============ Écran « Trier » ============ */
+  const issueTxt = (p) => p.issue === 'doublon' ? 'Doublon' : p.issue ? cap(p.issue) : '';
+  function tuile(p, multi) {
+    let badge = '';
+    if (p.issue) badge = "<span class=\"badge bad\">" + issueTxt(p) + "</span>";else
+    if (multi && !p.chienId) badge = "<span class=\"badge qui\">Qui ?</span>";
+    const c = chien(p.chienId);
+    return "<div class=\"ph " + (p.keep ? '' : 'off') + "\" style=\"aspect-ratio:" + p.W + " / " + p.H + "\">\n    <button class=\"open\" data-open=\"" +
+    p.id + "\" aria-label=\"Voir la photo de " + p.heure + "\"><div class=\"vue\" style=\"" + apercu(p.thumb, cadreDe(p)) + "\"></div></button>\n    " +
+    badge + "<span class=\"t\">" + p.heure + "</span>" + (multi && c ? "<span class=\"dogname\">" + esc(c.nom) + "</span>" : '') + "\n    <button class=\"keep\" data-keep=\"" +
+    p.id + "\" aria-pressed=\"" + p.keep + "\" aria-label=\"" + (p.keep ? 'Écarter' : 'Garder') + " cette photo\">" + icon('check') + "</button></div>";
+  }
+  function groupesBatch() {
+    const B = st.batch,g = [];
+    st.ctx.seances.slice().sort((a, b) => a.debut.localeCompare(b.debut)).forEach((s) => {
+      const ps = B.photos.filter((p) => p.seanceId === s.id);
+      if (ps.length) g.push({ s, ps, cle: s.id });
+    });
+    const hors = B.photos.filter((p) => !p.seanceId);
+    [...new Set(hors.map((p) => p.date))].forEach((d) => g.push({ hors: d, ps: hors.filter((p) => p.date === d), cle: 'hors-' + d }));
+    return g;
+  }
+  // Boutons communs à une séance : recadrage pour toute la séance, tout garder
+  function outilsGroupe(G) {
+    const niveaux = G.ps.filter((p) => p.box).map((p) => p.recadrage);
+    const commun = niveaux.length && niveaux.every((n) => n === niveaux[0]) ? niveaux[0] : '';
+    return "<div class=\"accord\"><span class=\"small muted\">Recadrage :</span><div class=\"seg\" role=\"group\">" + Object.entries(RECADRAGES).map(([k, r]) => "<button data-grecadrage=\"" + G.cle + "\" data-v=\"" + k + "\" aria-pressed=\"" + (commun === k) + "\">" + r.court + "</button>").join('') + "</div>\n    " + (
+    G.ps.some((p) => !p.keep) ? "<button class=\"btn small\" data-toutgarder=\"" + G.cle + "\">Tout garder</button>" : '') + "</div>";
+  }
+  function renderTrier() {
+    if (st.fini) return renderFini();
+    if (!st.batch) {
+      let h = "<header class=\"top\"><h1>Trier les photos</h1><p class=\"sub\">" + cap(jour(toStr(new Date()))) + "</p></header>";
+      if (majDispo()) h += "<div class=\"note mt\" style=\"margin-bottom:14px\"><b>Une nouvelle version de l'appli est disponible.</b>" + (st.version.derniere.notes ? '<br>' + esc(st.version.derniere.notes) : '') + "<br><button class=\"btn primary small mt\" data-act=\"maj\">Mettre \xE0 jour l'appli</button></div>";
+      if (st.jour && st.jour.seances.length) {
+        h += "<div class=\"card\"><h2 style=\"font-size:20px;margin-bottom:8px\">Les s\xE9ances d'aujourd'hui</h2>\n        " +
+        st.jour.seances.map((s) => "<p style=\"padding:6px 0;border-top:1px solid var(--line)\"><b>" + hh(s.debut.slice(11, 16)) + "</b> \xB7 " + esc(nomSeanceCtx(st.jour, s)) + "</p>").join('') + "</div>";
+      }
+      h += "<button class=\"btn primary big\" data-act=\"importer\">" + icon('upload') + " Choisir les photos</button>\n      <p class=\"muted small\" style=\"text-align:center;margin-top:8px\">S\xE9lectionne toutes les photos d'un coup dans la galerie (appui long sur la premi\xE8re, puis touche les autres). Plusieurs s\xE9ances ou plusieurs jours \xE0 la fois, \xE7a marche aussi.</p>";
+
+      if (st.jour && st.jour.source === 'google-agenda') h += "<p class=\"note amber small mt\">L'Agenda Canin n'a pas \xE9t\xE9 trouv\xE9 sur ce compte : les s\xE9ances sont lues dans Google Agenda, et il faudra choisir le chien \xE0 la main.</p>";
+      return h + aide() + ("<p class=\"muted small\" style=\"text-align:center;margin-top:18px\">Version " + esc(st.version ? st.version.actuelle : '…') + " \xB7 <button class=\"btn small\" data-act=\"maj\" style=\"vertical-align:middle\">" + (majDispo() ? 'Mettre à jour l’appli' : 'Rechercher une mise à jour') + "</button></p>");
+    }
+    const B = st.batch,all = B.photos,kept = all.filter((p) => p.keep);
+    const n = (k) => all.filter((p) => p.issue === k).length;
+    const dates = [...new Set(all.map((p) => p.date))];
+    let h = "<header class=\"top\"><h1>Tri des photos</h1><p class=\"sub\">" + all.length + " photos \xB7 " + dates.map((d) => jour(d)).join(', ') + "</p></header>\n    <div class=\"stats\">\n      <div class=\"stat\"><b>" +
+
+    all.length + "</b><span>import\xE9es</span></div>\n      <div class=\"stat\"><b>" +
+    n('floue') + "</b><span>floues</span></div>\n      <div class=\"stat\"><b>" +
+    n('doublon') + "</b><span>doublons</span></div>\n      <div class=\"stat\"><b>" +
+    all.filter((p) => p.issue && p.issue !== 'floue' && p.issue !== 'doublon').length + "</b><span>rat\xE9es</span></div>\n      <div class=\"stat good\"><b>" +
+    kept.length + "</b><span>gard\xE9es</span></div></div>\n    <p class=\"small muted\" style=\"margin-bottom:12px\">Toutes les photos r\xE9ussies sont gard\xE9es. Les floues, rat\xE9es et doublons sont mises de c\xF4t\xE9 : touche \xAB \xC9cart\xE9es \xBB pour les revoir et en r\xE9cup\xE9rer.</p>\n    <div class=\"seg\" role=\"group\" aria-label=\"Afficher\">" +
+
+    [['sel', 'Gardées'], ['tout', 'Toutes'], ['off', 'Écartées']].map(([k, l]) => "<button data-filtre=\"" + k + "\" aria-pressed=\"" + (st.filtre === k) + "\">" + l + "</button>").join('') + "</div>";
+    const keepF = (p) => st.filtre === 'tout' || (st.filtre === 'sel' ? p.keep : !p.keep);
+    groupesBatch().forEach((G) => {
+      const shown = G.ps.filter(keepF);
+      const t0 = G.ps[0].heure,t1 = G.ps[G.ps.length - 1].heure;
+      const grille = shown.length ? "<div class=\"grid\">" + shown.map((p) => tuile(p, true)).join('') + "</div>" : "<p class=\"muted small\">Aucune photo dans ce filtre.</p>";
+      if (G.hors) {
+        h += "<section class=\"card\" style=\"border-color:var(--amber)\"><div class=\"sess-head\"><div><h2>\xC0 ranger" + (dates.length > 1 ? ' · ' + fCourt.format(parse(G.hors)) : '') + "</h2>\n        <p class=\"sub\">" +
+        G.ps.length + " photo(s) entre " + t0 + " et " + t1 + " : pas de s\xE9ance \xE0 cette heure-l\xE0 dans l'agenda.</p></div></div>\n        <label class=\"lbl\" style=\"display:block;margin-top:0\">Tout ranger avec\n        <select data-hors=\"" +
+
+        G.hors + "\"><option value=\"\">\u2014 Choisir \u2014</option>\n          " +
+        st.ctx.seances.filter((s) => s.debut.startsWith(G.hors)).map((s) => "<option value=\"s:" + s.id + "\">S\xE9ance " + esc(nomSeance(s)) + "</option>").join('') + "\n          " +
+        st.ctx.chiens.slice().sort((a, b) => a.nom.localeCompare(b.nom)).map((d) => "<option value=\"d:" + d.id + "\">" + esc(d.nom) + (d.clientNom ? ' (' + esc(d.clientNom) + ')' : '') + "</option>").join('') + "\n          <option value=\"nouveau\">Autre chien\u2026</option></select></label>\n        <p class=\"small muted mt\" style=\"margin-bottom:10px\">Ou touche une photo pour choisir photo par photo. Sans nom de chien, elles iront dans \xAB Autres photos \xBB.</p>\n        " +
+
+
+        outilsGroupe(G) + grille + "</section>";
+        return;
+      }
+      const s = G.s,multi = s.chiens.length > 1;
+      const inconnus = G.ps.filter((p) => !p.chienId).length;
+      h += "<section class=\"card\"><div class=\"sess-head\"><div>\n      <h2>" + (
+      dates.length > 1 ? fCourt.format(parse(s.debut)) + ' · ' : '') + esc(nomSeance(s)) + "</h2>\n      <p class=\"sub\">" +
+      s.chiens.map((id) => chien(id)).filter(Boolean).map((c) => "<b>" + esc(c.nom) + "</b>" + (c.race ? ' (' + esc(c.race) + ')' : '')).join(', ') + (s.titre && s.type !== 'collectif' ? ' · ' + esc(s.titre) : '') + "</p></div>\n      <span class=\"tag\">" +
+      G.ps.length + " photos \xB7 " + G.ps.filter((p) => p.keep).length + " gard\xE9es</span></div>\n      <p class=\"small muted\" style=\"margin-bottom:10px\">\uD83D\uDCC5 Rang\xE9es gr\xE2ce \xE0 l'heure des photos (" +
+      t0 + " \u2192 " + t1 + ")." + (multi ? " \uD83D\uDC15 " + s.chiens.map((id) => esc((chien(id) || {}).nom) + " : " + G.ps.filter((p) => p.chienId === id).length).join(', ') + "." : '') + "</p>\n      " + (
+      multi && inconnus ? "<p class=\"note amber small\" style=\"margin-bottom:10px\">\uD83D\uDC3E " + inconnus + " photo(s) o\xF9 l'appli ne sait pas encore qui est qui. Touche une photo de chaque chien et choisis son nom : elle reconna\xEEtra les autres toute seule, et s'en souviendra la prochaine fois.</p>" : '') + "\n      " +
+      outilsGroupe(G) + grille + "\n    </section>";
+
+    });
+    h += "<div class=\"btn-row\" style=\"justify-content:center;margin-bottom:14px\"><button class=\"btn ghost\" data-act=\"abandon\">Abandonner ce tri</button></div>";
+    return h + aide();
+  }
+  function nomSeanceCtx(ctx, s) {const old = st.ctx;st.ctx = ctx;const n = nomSeance(s).replace(/^\S+ /, '');st.ctx = old;return n;}
+  function renderFini() {
+    const f = st.fini;
+    return "<header class=\"top\"><h1>C'est rang\xE9 \u2713</h1><p class=\"sub\">" + f.n + " photo(s) dans Google Drive \u203A Photos Canin</p></header>\n    <div class=\"card\"><p>Les photos sont rang\xE9es par s\xE9ance, recadr\xE9es, avec le nom du chien dans le nom du fichier. Tu les retrouves aussi dans l'onglet <b>Rechercher</b>.</p>\n    " + (
+
+    f.erreurs ? "<p class=\"note amber small mt\">\u26A0\uFE0F " + f.erreurs + " photo(s) n'ont pas pu \xEAtre envoy\xE9es (connexion ?). Elles sont encore dans le t\xE9l\xE9phone : refais un tri avec elles plus tard.</p>" : '') + "\n    <div class=\"btn-row mt\">" + (
+    f.dossier && f.dossier !== '#' ? "<a class=\"btn\" href=\"" + f.dossier + "\" target=\"_blank\" rel=\"noopener\">Ouvrir le dossier Drive</a>" : '') + "\n    <button class=\"btn primary\" data-act=\"nouveau\">Trier d'autres photos</button></div></div>";
+
+  }
+  function aide() {
+    return "<details class=\"how card\"><summary>Comment \xE7a marche ?</summary><ol>\n    <li><b>Rangement :</b> chaque photo a une date et une heure. L'appli les compare aux rendez-vous de l'Agenda Canin pour savoir quelle s\xE9ance, quel client, quel chien.</li>\n    <li><b>Premier tri :</b> elle met de c\xF4t\xE9 les photos floues, trop sombres, sans chien ou avec le chien coup\xE9, et les rafales presque identiques (elle garde la plus nette). Tout le reste est gard\xE9 : c'est toi qui d\xE9cides.</li>\n    <li><b>Recadrage :</b> elle rep\xE8re le chien et recentre la photo sur lui, sans changer la forme de la photo. \xAB Large \xBB garde du d\xE9cor, \xAB Serr\xE9 \xBB zoome sur le chien, \xAB Enti\xE8re \xBB ne recadre pas.</li>\n    <li><b>Plusieurs chiens dans une s\xE9ance :</b> la premi\xE8re fois, montre-lui une photo de chaque chien. Ensuite elle les reconna\xEEt.</li>\n    <li><b>Action (saut, tunnel\u2026) :</b> facultatif. Tu peux la choisir sur une photo ; avec quelques exemples, l'appli la propose toute seule. Elle sert \xE0 retrouver les photos dans Rechercher.</li>\n    <li><b>O\xF9 \xE7a tourne :</b> l'analyse se fait sur le t\xE9l\xE9phone, gratuitement. Seules les photos gard\xE9es partent, recadr\xE9es, dans ton Google Drive. Les originaux restent dans le t\xE9l\xE9phone.</li></ol></details>";
+
+
+
+
+
+
+  }
+
+  /* ============ Fiche d'une photo du tri ============ */
+  let dlg = { id: null, grand: null, grandId: null, stock: null };
+  async function ouvrirPhoto(id) {
+    dlg.id = id;dlg.stock = null;
+    dessinerPhoto();
+    if (!el('#dlg').open) el('#dlg').showModal();
+    const p = st.batch.photos.find((x) => x.id === id);
+    if (dlg.grandId !== id) {
+      try {const src = await decoder(p.file);const url = await versUrl(reduire(src, 1280), 0.85);if (src.close) src.close();if (dlg.grand) URL.revokeObjectURL(dlg.grand);dlg.grand = url;dlg.grandId = id;if (dlg.id === id) dessinerPhoto();} catch (e) {}
+    }
+  }
+  function voisines() {
+    const p = st.batch.photos.find((x) => x.id === dlg.id);
+    const G = groupesBatch().find((g) => g.ps.includes(p));
+    const keepF = (x) => st.filtre === 'tout' || (st.filtre === 'sel' ? x.keep : !x.keep);
+    const list = G.ps.filter((x) => keepF(x) || x === p);
+    const i = list.indexOf(p);
+    return { prev: list[i - 1], next: list[i + 1] };
+  }
+  function dessinerPhoto() {
+    const p = st.batch.photos.find((x) => x.id === dlg.id),s = seance(p.seanceId),c = chien(p.chienId);
+    const url = dlg.grandId === p.id ? dlg.grand : p.thumb;
+    const [cx, cy, cw, ch] = cadreDe(p);
+    const choixChiens = s ? s.chiens.map(chien).filter(Boolean) : st.ctx.chiens.slice().sort((a, b) => a.nom.localeCompare(b.nom));
+    const agi = estAgility(s);
+    const groupesA = agi ? [['agility', 'Agility'], ['education', 'Éducation'], ['autre', 'Autre']] : [['education', 'Éducation'], ['agility', 'Agility'], ['autre', 'Autre']];
+    const { prev, next } = voisines();
+    el('#dlg').innerHTML = "<div class=\"dlg-head\">\n      <button class=\"icon-btn\" data-nav=\"" + (
+    prev ? prev.id : '') + "\" " + (prev ? '' : 'disabled') + " aria-label=\"Photo pr\xE9c\xE9dente\">" + icon('left') + "</button>\n      <div style=\"flex:1;min-width:0\"><h2 style=\"font-size:18px\">" + (
+    c ? esc(c.nom) : 'Photo') + (p.action ? ' · ' + actionLabel(p.action) : '') + "</h2>\n      <p class=\"sub\">" +
+    cap(jour(p.date)) + " \xE0 " + p.heure + (s ? '' : ' · hors séance') + "</p></div>\n      <button class=\"icon-btn\" data-nav=\"" + (
+    next ? next.id : '') + "\" " + (next ? '' : 'disabled') + " aria-label=\"Photo suivante\">" + icon('right') + "</button>\n      <button class=\"icon-btn\" data-close aria-label=\"Fermer\">" +
+    icon('close') + "</button></div>\n    <div class=\"dlg-body\">\n      <div class=\"big-ph\"><img src=\"" +
+
+    url + "\" alt=\"\">" + (cw < 0.999 || ch < 0.999 ? "<div class=\"cadre\" style=\"left:" + cx * 100 + "%;top:" + cy * 100 + "%;width:" + cw * 100 + "%;height:" + ch * 100 + "%\"></div>" : '') + "</div>\n      " + (
+    p.issue ? "<p class=\"note amber small mt\">Mise de c\xF4t\xE9 automatiquement : <b>" + issueTxt(p) + "</b>" + (p.issue === 'doublon' ? ' (presque identique à une photo de la même rafale, la plus nette est gardée)' : '') + ". Tu peux la garder quand m\xEAme.</p>" : '') + "\n      <div class=\"btn-row mt\"><button class=\"btn " + (
+    p.keep ? '' : 'primary') + "\" data-dkeep>" + (p.keep ? 'Écarter cette photo' : 'Garder cette photo') + "</button></div>\n      <div class=\"lbl\">Recadrage " + (
+    p.box ? '<span style="font-weight:400">(la partie claire est ce qui sera gardé)</span>' : '<span style="font-weight:400">(chien non trouvé sur la photo : elle reste entière)</span>') + "</div>\n      " + (
+    p.box && p.recadrage !== 'entiere' && cw > 0.999 ? '<p class="small muted" style="margin-bottom:6px">Le chien remplit déjà la photo : rien à recadrer sans le couper.</p>' : '') + "\n      <div class=\"seg\" role=\"group\" style=\"max-width:420px\">" +
+    Object.entries(RECADRAGES).map(([k, r]) => "<button data-recadrage=\"" + k + "\" aria-pressed=\"" + ((p.box ? p.recadrage : 'entiere') === k) + "\" " + (p.box || k === 'entiere' ? '' : 'disabled') + ">" + r.court + "</button>").join('') + "</div>\n      <div class=\"lbl\">Qui est-ce ?" + (
+    p.chienId && !p.chienManuel && p.chienConf < 1 ? " <span style=\"font-weight:400\">(reconnu \xE0 " + Math.round(p.chienConf * 100) + " %)</span>" : '') + "</div>\n      <div class=\"chips\">" +
+    choixChiens.map((d) => "<button class=\"chip\" data-chien=\"" + d.id + "\" aria-pressed=\"" + (p.chienId === d.id) + "\">" + esc(d.nom) + "</button>").join('') + "\n        " + (
+    s ? '' : '<button class="chip" data-chien="nouveau">+ Autre chien</button>') + "</div>\n      <div class=\"lbl\">Action <span style=\"font-weight:400\">(facultatif" + (
+    p.action && !p.actionManuel ? ', devinée : touche pour corriger' : '') + ")</span></div>\n      " +
+    groupesA.map(([g, l]) => "<div class=\"chips\" style=\"margin-bottom:6px\"><span class=\"small muted\" style=\"align-self:center;min-width:70px\">" + l + "</span>" + Object.entries(ACTIONS).filter(([, a]) => a[1] === g).map(([k, a]) => "<button class=\"chip\" data-action=\"" + k + "\" aria-pressed=\"" + (p.action === k) + "\">" + a[0] + "</button>").join('') + "</div>").join('') + "\n    </div>";
+
+  }
+  el('#dlg').addEventListener('click', async (e) => {
+    if (e.target === el('#dlg') || e.target.closest('[data-close]')) return el('#dlg').close();
+    if (dlg.stock) return clicStock(e);
+    const p = st.batch.photos.find((x) => x.id === dlg.id);
+    const nav = e.target.closest('[data-nav]');if (nav && nav.dataset.nav) return ouvrirPhoto(nav.dataset.nav);
+    if (e.target.closest('[data-dkeep]')) {p.keep = !p.keep;p.keepManuel = true;render();return dessinerPhoto();}
+    const rc = e.target.closest('[data-recadrage]');if (rc) {p.recadrage = rc.dataset.recadrage;p.recadrageManuel = true;render();return dessinerPhoto();}
+    const ch = e.target.closest('[data-chien]');
+    if (ch) {
+      let id = ch.dataset.chien;
+      if (id === 'nouveau') {id = await nouveauChien();if (!id) return;}
+      p.chienId = id;p.chienManuel = true;p.chienConf = 1;
+      classer();render();return dessinerPhoto();
+    }
+    const ac = e.target.closest('[data-action]');
+    if (ac) {p.action = p.action === ac.dataset.action && p.actionManuel ? null : ac.dataset.action;p.actionManuel = !!p.action;classer();render();return dessinerPhoto();}
+  });
+  el('#dlg').addEventListener('close', () => {dlg.stock = null;});
+  async function nouveauChien() {
+    const nom = (prompt('Nom du chien ?') || '').trim();
+    if (!nom) return null;
+    try {const d = await call('ajouterChien', nom);st.ctx.chiens.push(d);return d.id;} catch (e) {erreur(e);return null;}
+  }
+
+  /* ============ Validation : envoi dans Drive ============ */
+  // Découpe la photo en pleine résolution selon le recadrage choisi (au plus TAILLE_DRIVE pixels de côté)
+  function photoFinale(src, r) {
+    const W = src.width || src.naturalWidth,H = src.height || src.naturalHeight;
+    const [x, y, w, h] = r,k = Math.min(1, TAILLE_DRIVE / Math.max(w * W, h * H));
+    const c = document.createElement('canvas');
+    c.width = Math.round(w * W * k);c.height = Math.round(h * H * k);
+    const g = c.getContext('2d');
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(src, x * W, y * H, w * W, h * H, 0, 0, c.width, c.height);
+    return c;
+  }
+  async function valider() {
+    const B = st.batch,kept = B.photos.filter((p) => p.keep);
+    if (!kept.length) return toast('Aucune photo cochée');
+    const sansChien = kept.filter((p) => !p.chienId).length;
+    if (sansChien && !confirm(sansChien + " photo(s) gard\xE9e(s) sans nom de chien. Les ranger quand m\xEAme dans \xAB Autres photos \xBB ?")) return;
+    let dossier = '',erreurs = 0;
+    for (let i = 0; i < kept.length; i++) {
+      const p = kept[i];
+      if (p.envoyee) continue;
+      progression('Rangement dans Google Drive', i, kept.length, 'Garde l\'appli ouverte jusqu\'à la fin.');
+      const s = seance(p.seanceId),c = chien(p.chienId),r = cadreDe(p);
+      const meta = { id: p.id, date: p.date, heure: p.heure, seanceId: s ? s.id : '', seanceNom: s ? nomSeance(s) : '',
+        chienId: c ? c.id : '', chienNom: c ? c.nom : '', clientId: c ? c.clientId : '', clientNom: c ? c.clientNom : '',
+        action: p.action ? actionLabel(p.action) : '', note: r[2] < 0.999 || r[3] < 0.999 ? 'recadrée' : '', cadre: '' };
+      let ok = false;
+      for (let essai = 0; essai < 2 && !ok; essai++) {
+        try {
+          const src = await decoder(p.file);
+          const fin = photoFinale(src, r);
+          if (src.close) src.close();
+          meta.largeur = fin.width;meta.hauteur = fin.height;
+          const res = await call('enregistrerPhoto', meta, versB64(fin, 0.9), versB64(reduire(fin, 240), 0.72));
+          p.envoyee = true;ok = true;dossier = res.dossier || dossier;
+        } catch (e) {console.warn(e);}
+      }
+      if (!ok) erreurs++;
+    }
+    progression('Presque fini…', 0, 0, 'L\'appli retient les chiens et les actions pour la prochaine fois.');
+    const envoyees = kept.filter((p) => p.envoyee);
+    const items = [];
+    envoyees.forEach((p) => {
+      if (p.chienId && p.vDog) items.push({ id: uid('a'), type: 'chien', label: p.chienId, vecteur: encoder(p.vDog) });
+      if (p.action && p.vImg) items.push({ id: uid('a'), type: 'action', label: p.action, vecteur: encoder(p.vImg) });
+    });
+    try {if (items.length) await call('apprendre', items);} catch (e) {console.warn(e);}
+    el('#overlay').innerHTML = '';
+    B.photos.forEach((p) => URL.revokeObjectURL(p.thumb));
+    st.fini = { n: envoyees.length, erreurs, dossier };
+    st.batch = null;st.resultats = null;
+    render();scrollTo(0, 0);
+  }
+
+  /* ============ Écran « Rechercher » ============ */
+  let rechTimer;
+  async function chercher() {
+    try {st.resultats = await call('chercher', st.recherche);} catch (e) {erreur(e);st.resultats = { total: 0, photos: [], facettes: { chiens: {}, clients: {}, mois: {}, actions: {} } };}
+    if (st.tab === 'chercher') {const q = el('#q'),pos = q && document.activeElement === q ? q.selectionStart : null;render();if (pos !== null) {const n = el('#q');n.focus();n.setSelectionRange(pos, pos);}}
+  }
+  function renderChercher() {
+    const R = st.resultats,f = st.recherche;
+    let h = "<header class=\"top\"><h1>Rechercher</h1><p class=\"sub\">Par chien, client, date ou action</p></header>\n    <div class=\"search\">" +
+    icon('search') + "<input type=\"search\" id=\"q\" placeholder=\"Rio, tunnel, Martin, 2026-09\u2026\" value=\"" + esc(f.q) + "\" aria-label=\"Rechercher\"></div>";
+    if (!R) return h + '<div class="loading"><span class="spin"></span></div>';
+    const F = R.facettes;
+    const chip = (k, v, l) => "<button class=\"chip\" data-f=\"" + k + "\" data-v=\"" + esc(v) + "\" aria-pressed=\"" + (f[k] === v) + "\">" + esc(l) + "</button>";
+    const bloc = (titre, k, obj, lab) => Object.keys(obj).length ? "<div class=\"filter-label\">" + titre + "</div><div class=\"chips\">" + Object.keys(obj).sort((a, b) => k === 'mois' ? b.localeCompare(a) : lab(a).localeCompare(lab(b))).map((v) => chip(k, v, lab(v))).join('') + "</div>" : '';
+    h += bloc('Chiens', 'chienId', F.chiens, (v) => F.chiens[v]) + bloc('Clients', 'clientId', F.clients, (v) => F.clients[v]) +
+    bloc('Mois', 'mois', F.mois, (v) => cap(fMois.format(parse(v + '-01')))) + bloc('Actions', 'action', F.actions, (v) => v);
+    h += "<p class=\"muted small\" style=\"margin:14px 0 8px\">" + R.total + " photo" + (R.total > 1 ? 's' : '') + (R.total > R.photos.length ? " (les " + R.photos.length + " plus r\xE9centes affich\xE9es)" : '') + "</p>";
+    if (!R.photos.length) return h + ("<div class=\"empty\">" + (Object.keys(F.chiens).length ? 'Aucune photo ne correspond.' : 'Pas encore de photos rangées. Commence par l\'onglet Trier.') + "</div>");
+    return h + ("<div class=\"grid\">" + R.photos.map((r) => "<div class=\"ph\"><button class=\"open\" data-stock=\"" + r.id + "\" aria-label=\"Photo de " + esc(r.chienNom) + " du " + r.date + "\"><img src=\"data:image/jpeg;base64," + r.miniature + "\" alt=\"\" loading=\"lazy\"></button>\n    <span class=\"t\">" +
+    fCourt.format(parse(r.date)) + "</span><span class=\"dogname\">" + esc(r.chienNom) + "</span></div>").join('') + "</div>");
+  }
+
+  /* ============ Fiche d'une photo rangée ============ */
+  async function ouvrirStock(r) {
+    dlg.stock = { r, url: 'data:image/jpeg;base64,' + r.miniature, grand: false };
+    dessinerStock();
+    if (!el('#dlg').open) el('#dlg').showModal();
+    if (r.fileId) {
+      try {const b64 = await call('getImage', r.fileId);if (dlg.stock && dlg.stock.r === r) {dlg.stock.url = 'data:image/jpeg;base64,' + b64;dlg.stock.grand = true;dessinerStock();}} catch (e) {}
+    }
+  }
+  function dessinerStock() {
+    const { r, url } = dlg.stock;
+    el('#dlg').innerHTML = "<div class=\"dlg-head\"><div style=\"min-width:0\"><h2 style=\"font-size:18px\">" + esc(r.chienNom || 'Photo') + (r.action ? ' · ' + esc(r.action) : '') + "</h2>\n    <p class=\"sub\">" +
+    cap(jour(r.date)) + " \xE0 " + r.heure + (r.clientNom ? ' · ' + esc(r.clientNom) : '') + "</p></div>\n    <button class=\"icon-btn\" data-close aria-label=\"Fermer\">" +
+    icon('close') + "</button></div>\n    <div class=\"dlg-body\">\n      <div class=\"big-ph\"><img src=\"" +
+
+    url + "\" alt=\"\"></div>\n      <div class=\"lbl\">Action</div>\n      <div class=\"chips\">" +
+
+    Object.values(ACTIONS).map((a) => "<button class=\"chip\" data-saction=\"" + esc(a[0]) + "\" aria-pressed=\"" + (r.action === a[0]) + "\">" + a[0] + "</button>").join('') + "</div>\n      <div class=\"btn-row mt\">\n        <button class=\"btn primary\" data-telecharger>Enregistrer sur le t\xE9l\xE9phone</button>\n        " + (
+
+
+    r.fileId && IS_GAS ? "<a class=\"btn\" href=\"https://drive.google.com/file/d/" + r.fileId + "/view\" target=\"_blank\" rel=\"noopener\">Ouvrir dans Drive</a>" : '') + "</div>\n    </div>";
+
+  }
+  async function clicStock(e) {
+    const { r } = dlg.stock;
+    const a = e.target.closest('[data-saction]');
+    if (a) {
+      try {const n = await call('majPhoto', r.id, { action: r.action === a.dataset.saction ? '' : a.dataset.saction });Object.assign(r, n);dessinerStock();toast('Enregistré');} catch (x) {erreur(x);}
+      return;
+    }
+    if (e.target.closest('[data-telecharger]')) {
+      try {
+        const img = await b64Image(dlg.stock.grand ? dlg.stock.url.split(',')[1] : await call('getImage', r.fileId));
+        await partagerOuTelecharger([{ nom: r.date + " " + r.heure.replace(':', 'h') + " " + (r.chienNom || 'photo') + ".jpg", canvas: reduire(img, 99999) }]);
+      } catch (x) {erreur(x);}
+    }
+  }
+  function peutPartager() {try {return !!(navigator.canShare && navigator.canShare({ files: [new File([''], 'x.jpg', { type: 'image/jpeg' })] }));} catch (e) {return false;}}
+  async function partagerOuTelecharger(items) {
+    const files = await Promise.all(items.map((it) => new Promise((r) => it.canvas.toBlob((b) => r(new File([b], it.nom, { type: 'image/jpeg' })), 'image/jpeg', 0.92))));
+    if (peutPartager()) {try {await navigator.share({ files });return;} catch (e) {if (e.name === 'AbortError') return;}}
+    files.forEach((f) => {const a = document.createElement('a');a.href = URL.createObjectURL(f);a.download = f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(() => URL.revokeObjectURL(a.href), 5000);});
+  }
+
+  /* ============ Événements ============ */
+  el('#main').addEventListener('click', async (e) => {
+    const t = e.target;
+    const act = t.closest('[data-act]') && t.closest('[data-act]').dataset.act;
+    if (act === 'importer') return ouvrirImport();
+    if (act === 'maj') return majAppli(t.closest('[data-act]'));
+    if (act === 'nouveau') {st.fini = null;render();return ouvrirImport();}
+    if (act === 'abandon') {if (confirm('Abandonner ce tri ? Rien n\'a encore été rangé, les photos restent dans le téléphone.')) {st.batch.photos.forEach((p) => URL.revokeObjectURL(p.thumb));st.batch = null;render();}return;}
+    const k = t.closest('[data-keep]');if (k) {const p = st.batch.photos.find((x) => x.id === k.dataset.keep);p.keep = !p.keep;p.keepManuel = true;return render();}
+    const o = t.closest('[data-open]');if (o) return ouvrirPhoto(o.dataset.open);
+    const fl = t.closest('[data-filtre]');if (fl) {st.filtre = fl.dataset.filtre;return render();}
+    const gr = t.closest('[data-grecadrage]');
+    if (gr) {groupesBatch().find((g) => g.cle === gr.dataset.grecadrage).ps.forEach((p) => {p.recadrage = gr.dataset.v;p.recadrageManuel = true;});return render();}
+    const tg = t.closest('[data-toutgarder]');
+    if (tg) {groupesBatch().find((g) => g.cle === tg.dataset.toutgarder).ps.forEach((p) => {p.keep = true;p.keepManuel = true;});return render();}
+    const fc = t.closest('[data-f]');if (fc) {const kk = fc.dataset.f;st.recherche[kk] = st.recherche[kk] === fc.dataset.v ? '' : fc.dataset.v;return chercher();}
+    const sk = t.closest('[data-stock]');if (sk) return ouvrirStock(st.resultats.photos.find((r) => r.id === sk.dataset.stock));
+  });
+  el('#main').addEventListener('input', (e) => {
+    if (e.target.id === 'q') {st.recherche.q = e.target.value;clearTimeout(rechTimer);rechTimer = setTimeout(chercher, 350);}
+  });
+  el('#main').addEventListener('change', async (e) => {
+    if (!e.target.matches('[data-hors]')) return;
+    const v = e.target.value,d = e.target.dataset.hors;
+    const ps = st.batch.photos.filter((p) => !p.seanceId && p.date === d);
+    if (v === 'nouveau') {
+      const id = await nouveauChien();if (!id) return render();
+      ps.forEach((p) => {p.chienId = id;p.chienManuel = true;});
+    } else if (v.startsWith('s:')) {
+      const s = seance(v.slice(2));
+      ps.forEach((p) => {p.seanceId = s.id;p.seanceManuel = true;});
+    } else if (v.startsWith('d:')) {
+      ps.forEach((p) => {p.chienId = v.slice(2);p.chienManuel = true;});
+    }
+    classer();render();
+  });
+  el('#validate').addEventListener('click', (e) => {if (e.target.closest('[data-act="valider"]')) valider().catch((x) => {el('#overlay').innerHTML = '';erreur(x);});});
+  window.addEventListener('beforeunload', (e) => {if (st.batch && st.batch.photos.some((p) => p.keep && !p.envoyee)) {e.preventDefault();e.returnValue = '';}});
+
+  /* ============ Mise à jour de l'appli ============ */
+  function majDispo() {
+    const v = st.version;
+    return !!(v && v.derniere && v.derniere.version && v.actuelle !== 'essai' && v.derniere.version > v.actuelle);
+  }
+  async function verifierVersion() {
+    try {st.version = await call('infoVersion');if (!st.batch && !el('#overlay').innerHTML) render();} catch (e) {console.warn(e);}
+  }
+  async function majAppli(btn) {
+    if (!majDispo()) {
+      btn.disabled = true;btn.textContent = 'Recherche…';
+      await verifierVersion();
+      if (!majDispo()) toast('L’appli est déjà à jour.');
+      return render();
+    }
+    progression('Mise à jour de l’appli…', 0, 0, 'Environ 30 secondes. Ne ferme pas la page.');
+    try {
+      const r = await call('mettreAJour');
+      el('#overlay').innerHTML = "<div class=\"overlay\"><div class=\"card\"><h2 style=\"font-size:20px;margin-bottom:6px\">C\u2019est \xE0 jour \u2713</h2>\n      <p class=\"muted small\">La version " +
+      esc(r.version) + " est install\xE9e. Recharge l\u2019appli pour l\u2019utiliser.</p>\n      <a class=\"btn primary big mt\" href=\"" +
+      esc(r.url) + "\" target=\"_top\">Recharger l\u2019appli</a></div></div>";
+    } catch (e) {
+      el('#overlay').innerHTML = "<div class=\"overlay\"><div class=\"card\"><h2 style=\"font-size:20px;margin-bottom:6px\">Mise \xE0 jour impossible</h2>\n      <p class=\"muted small\">" +
+      esc(e && e.message ? e.message : e) + "</p><button class=\"btn mt\" onclick=\"this.closest('.overlay').remove()\">Fermer</button></div></div>";
+    }
+  }
+
+  /* ============ Démarrage ============ */
+  (async function demarrer() {
+    if (!IS_GAS) el('#demo').hidden = false;
+    render();
+    try {st.jour = await call('getContexte', [toStr(new Date()).slice(0, 10)], []);if (!st.batch) render();} catch (e) {console.warn(e);}
+    verifierVersion();
+    // Les outils de reconnaissance se chargent en avance, pendant qu'elle choisit ses photos
+    setTimeout(() => chargerOutils(), 1500);
+  })();
+
+  // Accès pour les tests
+  window.PhotosCanin = { st, M, importer, classer, render, valider, chercher, ouvrirStock, ouvrirPhoto, cadreDe };
+})();
+</script>
+</body>
+</html>
